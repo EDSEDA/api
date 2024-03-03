@@ -1,0 +1,6 @@
+__pycache__
+.idea
+.vscode
+grifon_api.egg-info
+build
+dist
