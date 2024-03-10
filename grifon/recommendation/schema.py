@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from enums import ExampleEnum
+from .enums import ExampleEnum
 
 
 class ExampleClass(BaseModel):
