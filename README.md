@@ -26,3 +26,7 @@
     
     File -> Settings -> Project -> Project Dependencies -> Выбрать текущий проект -> Поставить галочку на api
 
+___
+
+Архитектура проекта
+![img.png](res/architecture.png)
