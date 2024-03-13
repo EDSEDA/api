@@ -8,11 +8,11 @@ if sys.version_info >= (3, 12, 0):
 from kafka import KafkaConsumer, KafkaProducer
 import json
 import logging
-from config import settings
+from grifon.config import settings
 
 
 class KafkaClient:
-    def __init__(self, topic, bootstrap_servers=f'127.0.0.1:{29092}', producer_config={}, consumer_config={}):
+    def __init__(self, topic, bootstrap_servers=f'127.0.0.1:{9092}', producer_config={}, consumer_config={}):
         self.topic = topic
         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers,
                                       value_serializer=lambda v: json.dumps(v).encode('utf-8'),
