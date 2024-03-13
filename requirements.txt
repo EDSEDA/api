@@ -1,6 +1,6 @@
-pydantic~=2.1.1
-pydantic-settings~=2.1.0
-kafka-python~=2.0.2
+pydantic
+pydantic-settings
+kafka-python
 
 
 six~=1.16.0

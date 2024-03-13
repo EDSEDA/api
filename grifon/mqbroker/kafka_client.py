@@ -13,7 +13,7 @@ from grifon.config import settings  # noqa
 
 
 class KafkaClient:
-    def __init__(self, topic, model=None, bootstrap_servers=f'127.0.0.1:{29092}', producer_config={},
+    def __init__(self, topic, model=None, bootstrap_servers=f'127.0.0.1:{9092}', producer_config={},
                  consumer_config={}):
         self.topic = topic
         self.model = model

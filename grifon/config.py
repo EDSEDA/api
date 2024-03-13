@@ -3,9 +3,10 @@ import logging
 
 
 class Settings(BaseSettings):
+    VIDEO_ANALYSIS_TOPIC: str = "video_analysis"
 
     ZOOKEEPER_CLIENT_PORT: int = 2181
-    KAFKA_CLIENT_PORT: int = 29092
+    KAFKA_CLIENT_PORT: int = 9092
 
     LogLevel: int = logging.INFO
 
