@@ -2,7 +2,13 @@
 
 ## Общие зависимости
 
-    python3.11
+- python3.11
+
+- kafka:
+```bash
+docker run -p 9092:9092 apache/kafka:3.7.0 --name kafka_dev
+```
+или
 
 ## Подготовка проекта
 
