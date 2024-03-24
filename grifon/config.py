@@ -4,6 +4,7 @@ import logging
 
 class Settings(BaseSettings):
     VIDEO_ANALYSIS_TOPIC: str = "video_analysis"
+    RECOMMENDATION_TOPIC: str = "recommendation"
 
     ZOOKEEPER_CLIENT_PORT: int = 2181
     KAFKA_CLIENT_PORT: int = 9092

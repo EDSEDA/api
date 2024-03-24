@@ -1,11 +1,10 @@
-from enum import auto
-
 from grifon.enums import AutoName
 
 
 class SexEnum(str, AutoName):
     male = "male"
     female = "female"
+
 
 class RaceEnum(str, AutoName):
     white = "white"
@@ -19,4 +18,3 @@ class EmotionEnum(str, AutoName):
     negative = "negative"
     neutral = "neutral"
     positive = "positive"
-
