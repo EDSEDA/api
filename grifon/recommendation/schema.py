@@ -1,9 +1,17 @@
 from pydantic import BaseModel, Field
 
-from grifon.recommendation.enums import ExampleEnum
+from typing import List
+
+from .enums import SexEnum
+from .enums import RaceEnum
+from .enums import EmotionEnum
 
 
-class ExampleClass(BaseModel):
-    field1: str = Field(description='Описание', example='Пример')
-    field2: str | None = Field(description='Описание', example='Пример')
-    field3: ExampleEnum = ExampleEnum.field3
+class CreateUserRecommendationMessage(BaseModel):
+    cash_register_id: int = Field(description='ID кассы', example='123')
+    embedding: List[float] = Field(description='Эмбеддинг юзера', example='[0.0, 0.0, 0.0]')
+    user_id: int = Field(description='ID юзера', example='123')
+    age: int = Field(description='Возраст', example='12')
+    sex: SexEnum = Field(description='Пол', example='M')
+    race: RaceEnum = Field(description='Раса', example='European')
+    emotion: EmotionEnum = Field(description='Текущая эмоция', example='Happy')
