@@ -14,17 +14,15 @@ class KafkaClient:
     def __init__(self, broker_urls=settings.KAFKA_CLIENT_PORT):
         self.broker_urls = broker_urls
         self.topics_handlers = {}
-        self.consumer = Consumer({
-            'bootstrap.servers': self.broker_urls,
-            'group.id': 'my_group',
-            'auto.offset.reset': 'earliest'
-        })
-        self.producer = Producer({'bootstrap.servers': self.broker_urls})
+        base_kafka_conf = {'bootstrap.servers': self.broker_urls, }
 
-        self.admin_client = AdminClient({'bootstrap.servers': self.broker_urls})
+        self.consumer = Consumer(base_kafka_conf | {'group.id': 'my_group', 'auto.offset.reset': 'earliest'})
+        self.producer = Producer(base_kafka_conf)
+        self.admin_client = AdminClient(base_kafka_conf)
 
     def register_topic_handler(self, topic: str, handler=None):
         """Регистрирует обработчик для заданного топика или возвращает декоратор."""
+
         def _register_topic_handler(func):
             self._create_topic_if_not_exist(topic)
             self.topics_handlers[topic] = func
@@ -41,14 +39,6 @@ class KafkaClient:
         # Если обработчик передан напрямую, регистрируем его
         _register_topic_handler(handler)
         return handler
-
-
-    #
-    # def register_topic_handler(self, topic: str, handler):
-    #     """Регистрирует обработчик для заданного топика."""
-    #     self._create_topic_if_not_exist(topic)
-    #     self.topics_handlers[topic] = handler
-    #     logging.info(f'New topic registered: "{topic}"')
 
     def _create_topic_if_not_exist(self, topic):
         if topic not in self.admin_client.list_topics(timeout=10).topics:
