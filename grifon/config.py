@@ -1,5 +1,6 @@
-from pydantic_settings import BaseSettings
 import logging
+
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
@@ -19,4 +20,3 @@ class Settings(BaseSettings):
 settings = Settings()
 logging.basicConfig(level=settings.LogLevel, format=settings.LogFormat)
 
-CLIENT_AVATAR_PATH = 'resources/clients'
