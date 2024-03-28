@@ -2,12 +2,11 @@ import asyncio
 import logging
 from typing import Union
 
-from pydantic import BaseModel
-
-from grifon.config import settings      # noqa
-
 from confluent_kafka import Consumer, Producer, KafkaError
 from confluent_kafka.admin import AdminClient, NewTopic
+from pydantic import BaseModel
+
+from grifon.config import settings  # noqa
 
 
 class KafkaClient:

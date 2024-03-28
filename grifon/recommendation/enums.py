@@ -5,6 +5,7 @@ class SexEnum(str, AutoName):
     male = "male"
     female = "female"
 
+
 class RaceEnum(str, AutoName):
     white = "white"
     black = "black"
