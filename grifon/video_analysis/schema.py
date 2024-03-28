@@ -1,14 +1,13 @@
 from typing import List
 
-from pydantic import Field
-from faust import Record
+from pydantic import Field, BaseModel
 
 from grifon.video_analysis.enums import EmotionEnum
 from grifon.video_analysis.enums import RaceEnum
 from grifon.video_analysis.enums import SexEnum
 
 
-class VideoAnalyseMessage(Record, serializer='json'):
+class VideoAnalyseMessage(BaseModel):
     cash_register_id: int = Field(description='Описание', example='Пример')
     embedding: List[float] = Field(description='Описание', example='Пример')
     person_id: int = Field(description='Описание', example='Пример')

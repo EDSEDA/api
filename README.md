@@ -6,7 +6,7 @@
 
 - kafka:
 ```bash
-docker run -p 9092:9092 apache/kafka:3.7.0 --name kafka_dev
+docker run -p 9092:9092 --name kafka_dev apache/kafka:3.7.0
 ```
 или
 
