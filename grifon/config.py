@@ -6,10 +6,10 @@ class Settings(BaseSettings):
     VIDEO_ANALYSIS_TOPIC: str = "video_analysis"
     RECOMMENDATION_TOPIC: str = "recommendation"
 
-    ZOOKEEPER_CLIENT_PORT: int = 2181
     KAFKA_CLIENT_PORT: int = 9092
 
     LogLevel: int = logging.INFO
+    LogFormat: str = "%(asctime)s - %(levelname)s - [%(funcName)s] - %(message)s"
 
     class Config:
         env_file = '.env'
@@ -17,6 +17,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=settings.LogLevel, format=settings.LogFormat)
 
 CLIENT_AVATAR_PATH = 'resources/clients'

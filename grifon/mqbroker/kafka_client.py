@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from typing import Union
 
 from pydantic import BaseModel
 
@@ -10,7 +11,7 @@ from confluent_kafka.admin import AdminClient, NewTopic
 
 
 class KafkaClient:
-    def __init__(self, broker_urls):
+    def __init__(self, broker_urls=settings.KAFKA_CLIENT_PORT):
         self.broker_urls = broker_urls
         self.topics_handlers = {}
         self.consumer = Consumer({
@@ -24,14 +25,17 @@ class KafkaClient:
 
     def register_topic_handler(self, topic: str, handler):
         """Регистрирует обработчик для заданного топика."""
+        self._create_topic_if_not_exist(topic)
+        self.topics_handlers[topic] = handler
+        logging.info(f'New topic registered: "{topic}"')
+
+    def _create_topic_if_not_exist(self, topic):
         if topic not in self.admin_client.list_topics(timeout=10).topics:
             new_topic = [NewTopic(topic, num_partitions=1, replication_factor=1)]
             fs = self.admin_client.create_topics(new_topic)
             for topic, f in fs.items():
                 f.result()
                 logging.info(f"Topic '{topic}' created")
-        self.topics_handlers[topic] = handler
-        logging.info(f'New topic registered: "{topic}"')
 
     async def start_handling(self):
         """Запускает обработку сообщений для всех зарегистрированных топиков."""
@@ -56,13 +60,13 @@ class KafkaClient:
         finally:
             self.consumer.close()
 
-    def send_message(self, topic: str, message):
+    def send_message(self, topic: str, message: Union[str, BaseModel]):
         """Отправляет сериализованное сообщение в заданный топик."""
+
         # serialized_message = message.model_dump_json()
         if isinstance(message, str):
             serialized_message = message
         elif isinstance(message, BaseModel):
-            # Если message является экземпляром BaseModel, сериализуем его в JSON
             serialized_message = message.model_dump_json()
         else:
             logging.error(f"Unsupported message type: {type(message)}")
