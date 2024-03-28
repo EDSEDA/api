@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from functools import wraps
 from typing import Union
 
 from confluent_kafka import Consumer, Producer, KafkaError
@@ -22,11 +23,32 @@ class KafkaClient:
 
         self.admin_client = AdminClient({'bootstrap.servers': self.broker_urls})
 
-    def register_topic_handler(self, topic: str, handler):
-        """Регистрирует обработчик для заданного топика."""
-        self._create_topic_if_not_exist(topic)
-        self.topics_handlers[topic] = handler
-        logging.info(f'New topic registered: "{topic}"')
+    def register_topic_handler(self, topic: str, handler=None):
+        """Регистрирует обработчик для заданного топика или возвращает декоратор."""
+        def _register_topic_handler(func):
+            self._create_topic_if_not_exist(topic)
+            self.topics_handlers[topic] = func
+            logging.info(f'New topic handler registered for: "{topic}"')
+
+        def decorator(func):
+            # Декоратор регистрирует функцию как обработчик без ее вызова
+            _register_topic_handler(func)
+            return func
+
+        if handler is None:
+            return decorator
+
+        # Если обработчик передан напрямую, регистрируем его
+        _register_topic_handler(handler)
+        return handler
+
+
+    #
+    # def register_topic_handler(self, topic: str, handler):
+    #     """Регистрирует обработчик для заданного топика."""
+    #     self._create_topic_if_not_exist(topic)
+    #     self.topics_handlers[topic] = handler
+    #     logging.info(f'New topic registered: "{topic}"')
 
     def _create_topic_if_not_exist(self, topic):
         if topic not in self.admin_client.list_topics(timeout=10).topics:

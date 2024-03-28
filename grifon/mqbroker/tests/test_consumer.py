@@ -10,9 +10,14 @@ async def handler_example(msg):
     print(f"Received message: {msg.value().decode('utf-8')} from topic {msg.topic()}")
 
 
+@kafka_client.register_topic_handler("my_topic2")
+async def handler_example(msg):
+    """Пример обработчика сообщения."""
+    print(f"Received message: {msg.value().decode('utf-8')} from topic {msg.topic()}")
+
+
 async def main():
     kafka_client.register_topic_handler("my_topic1", handler_example)
-    kafka_client.register_topic_handler("my_topic2", handler_example)
     kafka_client.register_topic_handler("my_topic1", handler_example)
 
     # Запуск обработчика сообщений в фоне
@@ -21,4 +26,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
