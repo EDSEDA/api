@@ -63,7 +63,6 @@ class KafkaClient:
     def send_message(self, topic: str, message: Union[str, BaseModel]):
         """Отправляет сериализованное сообщение в заданный топик."""
 
-        # serialized_message = message.model_dump_json()
         if isinstance(message, str):
             serialized_message = message
         elif isinstance(message, BaseModel):
@@ -79,7 +78,6 @@ class KafkaClient:
                 logging.info(f"Message delivered to {msg.topic()} [{msg.partition()}]")
 
         self.producer.produce(topic, serialized_message, callback=acked)
-        # Ожидание отправки сообщений и обработка коллбеков
         self.producer.poll(0)
 
     def flush(self):
