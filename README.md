@@ -36,3 +36,11 @@ ___
 
 Архитектура проекта
 ![img.png](res/architecture.png)
+
+
+## Дополнительные настройки и рекомендации
+
+#### Создание миграций
+    
+    alembic revision --autogenerate -m "<describe change here>"
+

@@ -1,3 +1,4 @@
 pydantic~=2.6.4
 pydantic-settings
 setuptools~=68.2.0
+confluent-kafka~=2.3.0
