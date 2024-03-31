@@ -27,3 +27,4 @@ class Settings(BaseSettings):
 settings = Settings()
 logging.basicConfig(level=settings.LogLevel, format=settings.LogFormat)
 
+DB_URL = f'{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_DATABASE}'
