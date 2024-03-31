@@ -50,7 +50,10 @@ class KafkaClient:
 
     async def start_handling(self):
         """Запускает обработку сообщений для всех зарегистрированных топиков."""
-        self.consumer.subscribe(list(self.topics_handlers.keys()))
+        topics = list(self.topics_handlers.keys())
+        assert topics != [], "Not registered topics"
+
+        self.consumer.subscribe(topics)
         logging.info('Starting message handling...')
         try:
             while True:
