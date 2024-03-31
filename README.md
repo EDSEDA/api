@@ -8,7 +8,12 @@
 ```bash
 docker run -p 9092:9092 --name kafka_dev apache/kafka:3.7.0
 ```
-или
+
+- postgres:
+```bash
+docker run -d --name postgres  --shm-size=1g -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres -c fsync=off
+```
+
 
 ## Подготовка проекта
 
