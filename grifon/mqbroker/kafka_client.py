@@ -26,7 +26,7 @@ class KafkaClient:
         def _register_topic_handler(func):
             self._create_topic_if_not_exist(topic)
             self.topics_handlers[topic] = func
-            logging.info(f'New topic handler registered for: "{topic}"')
+            logging.info(f'Topic handler registered for: "{topic}"')
 
         def decorator(func):
             # Декоратор регистрирует функцию как обработчик без ее вызова
