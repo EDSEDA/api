@@ -12,3 +12,9 @@ class CreateUserRecommendationMessage(BaseModel):
     sex: SexEnum = Field(description='Пол', example='male')
     race: RaceEnum = Field(description='Раса', example='white')
     emotion: EmotionEnum = Field(description='Текущая эмоция', example='neutral')
+
+
+class UserRecommendationMessage(BaseModel):
+    cash_register_id: int = Field(description='ID кассы', example=123)
+    user_id: int = Field(description='ID юзера', example=123)
+    recommendations: list[int] = Field(description='Айдишники рекомендованных товаров', example=[1, 2, 3, 4, 5])
