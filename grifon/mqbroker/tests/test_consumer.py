@@ -1,13 +1,23 @@
 import asyncio
 
 from grifon.mqbroker.kafka_client import KafkaClient
+from pydantic import BaseModel
+import json
+
 
 kafka_client = KafkaClient("localhost:9092")
 
 
+class TestMessage(BaseModel):
+    id: int
+    name: str
+
+
 async def handler_example(msg):
     """Пример обработчика сообщения."""
-    print(f"Received message: {msg.value().decode('utf-8')} from topic {msg.topic()}")
+    msg = TestMessage.parse_obj(json.loads(msg.value()))
+
+    print(f"Received message: {msg} from topic {msg.topic()}")
 
 
 @kafka_client.register_topic_handler("my_topic2")
