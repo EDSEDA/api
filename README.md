@@ -42,6 +42,8 @@ ___
 Архитектура проекта
 ![img.png](res/architecture.png)
 
+Временная диаграмма потока данных
+![data_diagramm.png](res%2Fdata_diagramm.png)
 
 ## Дополнительные настройки и рекомендации
 
