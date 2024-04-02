@@ -5,7 +5,8 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     VIDEO_ANALYSIS_TOPIC: str = "video_analysis"
-    RECOMMENDATION_TOPIC: str = "recommendation"
+    RECOMMENDATION_REQUEST_TOPIC: str = "recommendation_request"
+    RECOMMENDATION_RESPONSE_TOPIC: str = "recommendation_response"
 
     KAFKA_CLIENT_PORT: int = 9092
 
