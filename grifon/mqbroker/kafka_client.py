@@ -1,7 +1,7 @@
 import asyncio
+import json
 import logging
-from functools import wraps
-from typing import Union
+from typing import Union, Any, Dict, Callable
 
 from confluent_kafka import Consumer, Producer, KafkaError
 from confluent_kafka.admin import AdminClient, NewTopic
@@ -10,22 +10,27 @@ from pydantic import BaseModel
 from grifon.config import settings  # noqa
 
 
+class TopicHandler(BaseModel):
+    handler: Callable
+    msg_class: Any
+
+
 class KafkaClient:
     def __init__(self, broker_urls=settings.KAFKA_CLIENT_PORT):
         self.broker_urls = broker_urls
-        self.topics_handlers = {}
+        self.topics_handlers: Dict[str, TopicHandler] = {}
         base_kafka_conf = {'bootstrap.servers': self.broker_urls, }
 
         self.consumer = Consumer(base_kafka_conf | {'group.id': 'my_group', 'auto.offset.reset': 'earliest'})
         self.producer = Producer(base_kafka_conf)
         self.admin_client = AdminClient(base_kafka_conf)
 
-    def register_topic_handler(self, topic: str, handler=None):
+    def register_topic_handler(self, topic: str, handler=None, msg_class=None):
         """Регистрирует обработчик для заданного топика или возвращает декоратор."""
 
         def _register_topic_handler(func):
             self._create_topic_if_not_exist(topic)
-            self.topics_handlers[topic] = func
+            self.topics_handlers[topic] = TopicHandler(handler=func, msg_class=msg_class)
             logging.info(f'Topic handler registered for: "{topic}"')
 
         def decorator(func):
@@ -69,10 +74,20 @@ class KafkaClient:
                         break
                 topic = msg.topic()
                 if topic in self.topics_handlers:
-                    handler = self.topics_handlers[topic]
-                    await handler(msg)
+                    topic_handler = self.topics_handlers[topic]
+                    msg = KafkaClient._deserialize_msg(msg, topic_handler.msg_class)
+                    await topic_handler.handler(msg)
         finally:
             self.consumer.close()
+
+    @staticmethod
+    def _deserialize_msg(msg, msg_class: Any):
+        if isinstance(msg_class, BaseModel):
+            return msg_class.parse_obj(json.loads(msg.value()))
+        elif isinstance(msg, str):
+            return msg
+        logging.error(f"Unsupported message type: {type(msg)}")
+        return msg
 
     def send_message(self, topic: str, message: Union[str, BaseModel]):
         """Отправляет сериализованное сообщение в заданный топик."""
