@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     VIDEO_ANALYSIS_TOPIC: str = "video_analysis"
     RECOMMENDATION_REQUEST_TOPIC: str = "recommendation_request"
     RECOMMENDATION_RESPONSE_TOPIC: str = "recommendation_response"
+    CASHIER_INTERACTIONS_TOPIC: str = "cashier_interactions"
 
     KAFKA_CLIENT_PORT: int = 9092
 
