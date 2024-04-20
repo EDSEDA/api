@@ -7,7 +7,7 @@ from grifon.video_analysis.enums import RaceEnum
 from grifon.video_analysis.enums import SexEnum
 
 
-class VideoAnalyseMessage(BaseModel):
+class VideoAnalysisMessage(BaseModel):
     cash_register_id: int = Field(description='Описание', example='Пример')
     embedding: List[float] = Field(description='Описание', example='Пример')
     person_id: int = Field(description='Описание', example='Пример')
