@@ -1,4 +1,5 @@
 import asyncio
+import inspect
 import json
 import logging
 from typing import Union, Any, Dict, Callable
@@ -25,7 +26,7 @@ class KafkaClient:
         self.producer = Producer(base_kafka_conf)
         self.admin_client = AdminClient(base_kafka_conf)
 
-    def register_topic_handler(self, topic: str, handler=None, msg_class=None):
+    def register_topic_handler(self, topic: str, handler=None, msg_class=str):
         """Регистрирует обработчик для заданного топика или возвращает декоратор."""
 
         def _register_topic_handler(func):
@@ -82,9 +83,9 @@ class KafkaClient:
 
     @staticmethod
     def _deserialize_msg(msg, msg_class: Any):
-        if isinstance(msg_class, BaseModel):
+        if inspect.isclass(msg_class) and issubclass(msg_class, BaseModel):
             return msg_class.parse_obj(json.loads(msg.value()))
-        elif isinstance(msg, str):
+        elif isinstance(msg_class, str):
             return msg
         logging.error(f"Unsupported message type: {type(msg)}")
         return msg

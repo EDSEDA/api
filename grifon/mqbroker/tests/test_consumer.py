@@ -19,10 +19,11 @@ async def handler_example(msg):
     print(f"Received message: {msg}")
 
 
-@kafka_client.register_topic_handler("my_topic2")
+@kafka_client.register_topic_handler("my_topic2", msg_class=TestMessage)
 async def handler_example(msg):
     """Пример обработчика сообщения."""
-    print(f"Received message: {msg.value().decode('utf-8')} from topic {msg.topic()}")
+    print(dict(msg))
+    # print(f"Received message: {msg.value().decode('utf-8')} from topic {msg.topic()}")
 
 
 async def main():

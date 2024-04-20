@@ -25,7 +25,7 @@ async def main():
 
     # Отправка тестового сообщения в топики
     await send_test_message("my_topic1", m)
-    await send_test_message("my_topic2", "Hello, Kafka to topic2!")
+    await send_test_message("my_topic2", m)
 
 
 if __name__ == "__main__":
