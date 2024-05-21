@@ -12,7 +12,9 @@ class Settings(BaseSettings):
     KAFKA_CLIENT_PORT: int = 9092
 
     LogLevel: int = logging.INFO
-    LogFormat: str = "%(asctime)s - %(levelname)s - [%(funcName)s] - %(message)s"
+    LogFormat: str = "%(message)s"
+    LogFileSizeMB: int = 50
+    LogFileCount: int = 50
 
     DB_HOST: str = 'localhost'
     DB_PORT: int = 5432
@@ -27,6 +29,5 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-logging.basicConfig(level=settings.LogLevel, format=settings.LogFormat)
 
 DB_URL = f'{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_DATABASE}'
